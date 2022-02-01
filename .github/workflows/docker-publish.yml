@@ -40,7 +40,7 @@ jobs:
 
       - name: is renv.lock new
         run: |
-          echo RENV_NEW=$(contains(steps.changed-files.outputs.modified_files, 'renv.lock'))
+          echo $(`contains(steps.changed-files.outputs.modified_files`, 'renv.lock'))
 
       - name: Build image
         if: contains(steps.changed-files.outputs.modified_files, 'renv.lock')
