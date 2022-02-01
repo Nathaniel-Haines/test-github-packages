@@ -39,9 +39,8 @@ jobs:
         id: changed_files
 
       - name: Run step when a file changes
-        if: contains(steps.changed-files.outputs.modified_files, 'renv.lock')
         run: |
-          echo "Your renv.lock file has been modified."
+          echo contains(steps.changed-files.outputs.modified_files, 'renv.lock')
 
       - name: Build image
         if: contains(steps.changed-files.outputs.modified_files, 'renv.lock')
