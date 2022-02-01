@@ -3,6 +3,7 @@ library(ggplot2)
 
 set.seed(43210)
 
+
 love_for_renv <- rnorm(100, exp(.022*(1:100)), .8)
 
 my_plot <- 
