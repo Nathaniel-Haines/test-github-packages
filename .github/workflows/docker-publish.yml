@@ -40,7 +40,7 @@ jobs:
 
       - name: Run step when a file changes
         run: |
-          echo contains(steps.changed-files.outputs.modified_files, 'renv.lock')
+          echo ${{ steps.changed-files.outputs.modified_files }}
 
       - name: Build image
         if: contains(steps.changed-files.outputs.modified_files, 'renv.lock')
