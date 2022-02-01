@@ -44,6 +44,7 @@ jobs:
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           echo "${{ github.ref }}"
+          echo "${{ github.ref_name }}"
 
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.36.0
