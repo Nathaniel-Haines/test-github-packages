@@ -51,13 +51,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
-          
-      - name: Get git tag
         id: tag
-        uses: dawidd6/action-get-tag@v1
-        
+          
       - name: Echo git tag
-        run: echo ${{ steps.tag.outputs.tag }}
+        run: echo ${{ tag.outputs.tag }}
 
       - name: Push image
         run: |
