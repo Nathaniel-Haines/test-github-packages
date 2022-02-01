@@ -21,7 +21,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-        with:
           
       - name: Log in to registry
         run: |
