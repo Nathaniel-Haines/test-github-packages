@@ -43,22 +43,19 @@ jobs:
         # This is where you will update the PAT to GITHUB_TOKEN
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-          echo "${{ github.ref_name }}"
+          echo "${{ github.ref }}"
 
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.36.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
-      
-      - name: Get tag name
-        uses: little-core-labs/get-git-tag@v3.0.1
-        id: tagName
-      
-      - name: Some other step # Output usage example
-        with:
-          tagname: ${{ steps.tagName.outputs.tag }}
-          run: echo $GIT_TAG_NAME
+          
+      - name: Get git tag
+        id: tag
+        uses: dawidd6/action-get-tag@v1
+        run: |
+          echo ${{ steps.tag.outputs.tag }}
 
       - name: Push image
         run: |
