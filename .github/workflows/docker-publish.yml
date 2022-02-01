@@ -36,6 +36,7 @@ jobs:
           
       - name: Check if renv.lock has been updated
         uses: tj-actions/changed-files@v14.1
+        id: changed-files
 
       - name: is renv.lock new
         run: |
