@@ -38,30 +38,21 @@ jobs:
         uses: tj-actions/changed-files@v14.2
         id: changed_files
 
-      - name: Run step when a file changes
-        run: |
-          echo ${{ steps.changed_files.outputs.modified_files }}
-          
-      - name: Testing if 
-        if: ${{ contains(steps.changed_files.outputs.modified_files, 'renv.lock') }}
-        run: |
-          echo HELLOOOOOOOOOOOOOOOOOOOOOOOOOO
-
       - name: Build image
-        if: contains(steps.changed-files.outputs.modified_files, 'renv.lock')
+        if: ${{ contains(steps.changed_files.outputs.modified_files, 'renv.lock') }}
         run: |
           IMAGE_NAME=$(echo $IMAGE_NAME | tr '[A-Z]' '[a-z]')
           docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
 
       - name: Log in to registry
-        if: contains(steps.changed-files.outputs.modified_files, 'renv.lock')
+        if: ${{ contains(steps.changed_files.outputs.modified_files, 'renv.lock') }}
         run: |
           echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
           echo "${{ github.ref }}"
           echo "${{ github.ref_name }}"
 
       - name: Bump version and push tag
-        if: contains(steps.changed-files.outputs.modified_files, 'renv.lock')
+        if: ${{ contains(steps.changed_files.outputs.modified_files, 'renv.lock') }}
         uses: anothrNick/github-tag-action@1.36.0
         id: tag
         env:
@@ -69,7 +60,7 @@ jobs:
           WITH_V: true
 
       - name: Tag and push image
-        if: contains(steps.changed-files.outputs.modified_files, 'renv.lock')
+        if: ${{ contains(steps.changed_files.outputs.modified_files, 'renv.lock') }}
         run: |
           IMAGE_ID=ghcr.io/$IMAGE_NAME
 
