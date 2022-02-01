@@ -8,7 +8,6 @@
       }
     ]
   },
-  
   "Packages": {
     "MASS": {
       "Package": "MASS",
@@ -27,14 +26,6 @@
       "Requirements": [
         "lattice"
       ]
-    },
-    "R6": {
-      "Package": "R6",
-      "Version": "2.5.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "470851b6d5d0ac559e9d01bb352b4021",
-      "Requirements": []
     },
     "RColorBrewer": {
       "Package": "RColorBrewer",
