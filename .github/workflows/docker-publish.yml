@@ -37,6 +37,10 @@ jobs:
       - name: Check if renv.lock has been updated
         uses: tj-actions/changed-files@v14.1
 
+      - name: is renv.lock new
+        run: |
+          echo RENV_NEW=$(contains(steps.changed-files.outputs.modified_files, 'renv.lock'))
+
       - name: Build image
         if: contains(steps.changed-files.outputs.modified_files, 'renv.lock')
         run: |
