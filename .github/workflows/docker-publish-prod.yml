@@ -40,6 +40,6 @@ jobs:
           docker pull $IMAGE_ID:latest
           
           # Tag + Push semantic versioned image
-          docker tag $IMAGE_NAME $IMAGE_ID:prod
+          docker tag $IMAGE_ID:latest $IMAGE_ID:prod
           docker push $IMAGE_ID:prod
 
