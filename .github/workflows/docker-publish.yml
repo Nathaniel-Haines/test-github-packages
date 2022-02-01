@@ -36,9 +36,11 @@ jobs:
           
       - name: Check if renv.lock has been updated
         uses: tj-actions/changed-files@v14.2
+        env: 
+          CHANGED_FILES: steps.changed-files.outputs.modified_files
 
       - name: Run step when a file changes
-        if: contains(steps.changed-files.outputs.modified_files, 'renv.lock')
+        if: contains(CHANGED_FILES, 'renv.lock')
         run: |
           echo "Your renv.lock file has been modified."
 
