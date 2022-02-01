@@ -48,13 +48,13 @@ jobs:
 
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.36.0
+        id: tag
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
-        id: tag
           
       - name: Echo git tag
-        run: echo ${{ tag.outputs.tag }}
+        run: echo ${{ steps.tag.outputs.tag }}
 
       - name: Push image
         run: |
