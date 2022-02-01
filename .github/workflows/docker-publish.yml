@@ -54,8 +54,9 @@ jobs:
       - name: Get git tag
         id: tag
         uses: dawidd6/action-get-tag@v1
-        run: |
-          echo ${{ steps.tag.outputs.tag }}
+        
+      - name: Echo git tag
+        run: echo ${{ steps.tag.outputs.tag }}
 
       - name: Push image
         run: |
