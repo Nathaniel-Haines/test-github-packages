@@ -1,0 +1,46 @@
+name: Docker
+
+on:
+  workflow_dispatch:
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+
+
+jobs:
+  # Push image to GitHub Packages.
+  # See also https://docs.docker.com/docker-hub/builds/
+  push:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          
+      - name: Log in to registry
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          echo "${{ github.ref }}"
+          echo "${{ github.ref_name }}"
+
+      - name: Pull, re-tag latest as prod and push image
+        run: |
+          IMAGE_ID=ghcr.io/$IMAGE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          IMAGE_NAME=$(echo $IMAGE_NAME | tr '[A-Z]' '[a-z]')
+          
+          # Pull the latest image
+          docker pull $IMAGE_ID:latest
+          
+          # Tag + Push semantic versioned image
+          docker tag $IMAGE_NAME $IMAGE_ID:prod
+          docker push $IMAGE_ID:prod
+
