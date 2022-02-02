@@ -7,7 +7,7 @@ env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  REPOSITORY_NAME: ${{ github.repository }}
 
 
 jobs:
@@ -30,16 +30,16 @@ jobs:
 
       - name: Pull, re-tag latest as prod and push image
         run: |
-          IMAGE_ID=ghcr.io/$IMAGE_NAME
+          IMAGE_NAME=ghcr.io/$REPOSITORY_NAME
 
           # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           IMAGE_NAME=$(echo $IMAGE_NAME | tr '[A-Z]' '[a-z]')
+          REPOSITORY_NAME=$(echo $REPOSITORY_NAME | tr '[A-Z]' '[a-z]')
           
           # Pull the latest image
-          docker pull $IMAGE_ID:latest
+          docker pull $IMAGE_NAME:latest
           
           # Tag + Push semantic versioned image
-          docker tag $IMAGE_ID:latest $IMAGE_ID:prod
-          docker push $IMAGE_ID:prod
+          docker tag $IMAGE_NAME:latest $IMAGE_NAME:prod
+          docker push $IMAGE_NAME:prod
 

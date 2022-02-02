@@ -10,14 +10,12 @@ on:
     branches: [ "*" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
-  #pull_request:
-  #  branches: [ main ]
 
 env:
   # Use docker.io for Docker Hub if empty
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
-  IMAGE_NAME: ${{ github.repository }}
+  REPOSITORY_NAME: ${{ github.repository }}
 
 
 jobs:
@@ -41,8 +39,8 @@ jobs:
       - name: Build image
         if: ${{ contains(steps.changed_files.outputs.modified_files, 'renv.lock') }}
         run: |
-          IMAGE_NAME=$(echo $IMAGE_NAME | tr '[A-Z]' '[a-z]')
-          docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
+          REPOSITORY_NAME=$(echo $REPOSITORY_NAME | tr '[A-Z]' '[a-z]')
+          docker build . --file Dockerfile --tag $REPOSITORY_NAME --label "runnumber=${GITHUB_RUN_ID}"
 
       - name: Log in to registry
         if: ${{ contains(steps.changed_files.outputs.modified_files, 'renv.lock') }}
@@ -62,10 +60,10 @@ jobs:
       - name: Tag and push image
         if: ${{ contains(steps.changed_files.outputs.modified_files, 'renv.lock') }}
         run: |
-          IMAGE_ID=ghcr.io/$IMAGE_NAME
+          IMAGE_NAME=ghcr.io/$REPOSITORY_NAME
 
           # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          REPOSITORY_NAME=$(echo $REPOSITORY_NAME | tr '[A-Z]' '[a-z]')
           IMAGE_NAME=$(echo $IMAGE_NAME | tr '[A-Z]' '[a-z]')
           
           # Use Docker `latest` tag convention plus semantic versioning
@@ -73,17 +71,17 @@ jobs:
           SEMVER=${{ steps.tag.outputs.tag }}
           
           # Show some info
-          echo IMAGE_ID=$IMAGE_ID
+          echo REPOSITORY_NAME=$REPOSITORY_NAME
           echo VERSION=$VERSION
           echo SEMVER=$SEMVER
           
           # If main branch, tag and push latest
           if [ "$VERSION" == "main" ]
           then
-            docker tag $IMAGE_NAME $IMAGE_ID:latest
-            docker push $IMAGE_ID:latest
+            docker tag $REPOSITORY_NAME $IMAGE_NAME:latest
+            docker push $IMAGE_NAME:latest
           fi
           
           # Tag + Push semantic versioned image
-          docker tag $IMAGE_NAME $IMAGE_ID:$SEMVER
-          docker push $IMAGE_ID:$SEMVER
+          docker tag $REPOSITORY_NAME $IMAGE_NAME:$SEMVER
+          docker push $IMAGE_NAME:$SEMVER
