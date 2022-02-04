@@ -66,7 +66,7 @@ jobs:
           REPOSITORY_NAME=$(echo $REPOSITORY_NAME | tr '[A-Z]' '[a-z]')
           IMAGE_NAME=$(echo $IMAGE_NAME | tr '[A-Z]' '[a-z]')
           
-          # Use Docker `latest` tag convention plus semantic versioning
+          # Use ""staging tag convention plus semantic versioning
           VERSION=${{ github.ref_name }}
           SEMVER=${{ steps.tag.outputs.tag }}
           
@@ -75,11 +75,11 @@ jobs:
           echo VERSION=$VERSION
           echo SEMVER=$SEMVER
           
-          # If main branch, tag and push latest
+          # If main branch, tag and push staging
           if [ "$VERSION" == "main" ]
           then
-            docker tag $REPOSITORY_NAME $IMAGE_NAME:latest
-            docker push $IMAGE_NAME:latest
+            docker tag $REPOSITORY_NAME $IMAGE_NAME:staging
+            docker push $IMAGE_NAME:staging
           fi
           
           # Tag + Push semantic versioned image
